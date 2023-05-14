@@ -33,6 +33,7 @@ $departments = "SELECT * FROM departments WHERE `hospital_id` = '$hospital_id'";
     if ($result) {
         $data = [];
         while ($row = mysqli_fetch_assoc($result)) {
+            $row['image'] = 'https://thumbs.dreamstime.com/b/default-placeholder-doctor-half-length-portrait-photo-avatar-gray-color-default-placeholder-doctor-half-length-portrait-113622206.jpg';
             $data[] = $row;
         }
         echo json_encode(

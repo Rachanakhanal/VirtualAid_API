@@ -43,13 +43,14 @@ $hospital_id = $_GET['hospital_id'];
     if ($result) {
         $data = [];
         while ($row = mysqli_fetch_assoc($result)) {
+            $row['image'] = "images\doctor.jpeg";
             $data[] = $row;
         }
         echo json_encode(
             [
                 'success' => true,
                 'data' => $data,
-                'message' => 'Departments fetched Successfully'
+                'message' => 'Doctors fetched Successfully'
             ]
         );
     } else {

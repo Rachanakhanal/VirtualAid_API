@@ -21,25 +21,26 @@ $obj = json_decode($json, true);
 global $con;
 
 //get hospitals from the database
- $hospitals = "SELECT * FROM `hospitals` ";
-    $result = mysqli_query($con, $hospitals);
-    if ($result) {
-        $data = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = $row;
-        }
-        echo json_encode(
-            [
-                'success' => true,
-                'data' => $data,
-                'message' => 'Hospital fetched Successfully'
-            ]
-        );
-    } else {
-        echo json_encode(
-            [
-                'success' => false,
-                'message' => 'Error fetching hospitals'
-            ]
-        );
+$hospitals = "SELECT * FROM `hospitals` ";
+$result = mysqli_query($con, $hospitals);
+if ($result) {
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $row['image'] = "images\hospital.jpeg";
+        $data[] = $row;
     }
+    echo json_encode(
+        [
+            'success' => true,
+            'data' => $data,
+            'message' => 'Hospital fetched Successfully'
+        ]
+    );
+} else {
+    echo json_encode(
+        [
+            'success' => false,
+            'message' => 'Error fetching hospitals'
+        ]
+    );
+}

@@ -4,8 +4,6 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 
-
-
 $HostName = "localhost";
 $DatabaseName = "doctorappointment";
 $HostUser = "root";
@@ -20,38 +18,27 @@ $json = file_get_contents('php://input');
 //decoded the received json into and store into $obj variable
 $obj = json_decode($json, true);
 
+global $con;
+
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     if(strpos($email,"@gmail.com")){
         //check if the email is already in the database
-        $check_email = "SELECT * FROM `users` WHERE email = '$email' AND password = '$password'";
+        $check_email = "SELECT * FROM `hospitals` WHERE email = '$email'";
         $result = mysqli_query($con, $check_email);
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             $data=mysqli_fetch_assoc($result);
-            $userID = $data['user_id'];
-            if($userID!=null) {
-                if($data['role'] == 'admin') {
-                    $token = bin2hex(openssl_random_pseudo_bytes(16));
-                    //insert the token into the database
-                    $insert_token = "INSERT INTO personal_access_tokens (user_id, token) VALUES ('$userID', '$token')";
-                    $result2 = mysqli_query($con, $insert_token);
-                    
-                    echo json_encode(['status' => 'success', 'users' => $data]);
-                    
-                } else {
-                    echo json_encode(
-                        [
-                            'success' => false,
-                            'message' => 'Admin not found.'
-                        ]
-                    );
-                }
-            } else {
-                return false;
-            }
+            $hospitalID = $data['hospital_id'];
+            echo json_encode(
+                [
+                    'success' => true,
+                    'message' => 'Hospital Login Sucessfully',
+                    'id' => $hospitalID
+                ]
+            );
           
         } else {
             echo json_encode(
@@ -61,8 +48,9 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 ]
             );
         }
+
     }
-    else {
+    else{
         echo json_encode(
             [
                 'success' => false,
@@ -78,6 +66,3 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         ]
     );
 }
-
-
-

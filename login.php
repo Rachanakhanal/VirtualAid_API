@@ -30,7 +30,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
         $insert_token = "INSERT INTO personal_access_tokens (user_id, token) VALUES ('$user_id', '$token')";
         $result2 = mysqli_query($con, $insert_token);
         
-    echo json_encode(['status' => 'success', 'users' => $check]) ;
+    echo json_encode(['status' => 'success', 'token' => $token]) ;
   }
 
   else{
